@@ -2,8 +2,6 @@
 
 <!-- ROADMAP -->
 ## Roadmap
-I have read the whole document. The tasks completed:1 3. Made a registration User model and added 3 roles and corresponding scopes. 5) adhered to as many endpoints as was mentioned in the docs. 6) Apologies on the matter, I was swarmed by academic cycle tests during the assingment week. Am remaining with the School model and its endpoint functions. Wanted to finish it but couldn't. I understand this will affect my assessment.
-- [X] created a MongoDB Cluster on MongoDB Atlas for hosting database.
 - [X] connected the MongoDB Cluster to the Application
 - [X] made a User model and corresponding registration schema and endpoint functions
 - [X] added 3 heirarchy roles and corresponding scopes.
