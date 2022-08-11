@@ -9,7 +9,12 @@
     "mongoose": "^6.5.2",
     "nodemon": "^2.0.19"
   },
+  "engines": {
+    "node": ">=8.0.0"
+  },
+  
   "scripts": {
+    "start": "node app.js",
     "devStart": "nodemon app.js"
   }
   
