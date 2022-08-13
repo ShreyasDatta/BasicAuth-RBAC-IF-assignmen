@@ -10,6 +10,20 @@ app.use(express.urlencoded({
 
 const router = require("./api/router");
 
+router.get("/", (req, res) => {
+    const healthcheck = {
+      uptime: process.uptime(),
+      responseTime: process.hrtime(),
+      message: "OK",
+      timestamp: Date.now(),
+    };
+    try {
+      res.send(healthcheck);
+    } catch (error) {
+      healthcheck.message = error;
+      res.status(503).send();
+    }
+  });
 app.use("/api/", router);
 
 mongoose.connect(process.env.MONGO_DB_URI, {
@@ -23,3 +37,4 @@ mongoose.connection.once('open', () => {
 app.listen(PORT, () =>
     console.log(`Example app listening on port ${PORT}!`)
 );
+
