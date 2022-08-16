@@ -1,6 +1,8 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/registerModel')
+const Student = require('../models/registerStudentModel')
 const bcrypt = require('bcrypt');
+const { create } = require('../models/registerModel');
 
 async function hashPassword(password) {
     return await bcrypt.hash(password, 10);
@@ -24,7 +26,10 @@ module.exports = {
                 email,
                 password,
                 role,
-                name
+                // name,
+                first_name,
+                last_name,
+                mobile
             } = req.body
             const user = await User.findOne({
                 email
@@ -40,20 +45,27 @@ module.exports = {
                 email,
                 password: hashedPassword,
                 role: role || "basic",
-                name: name
+                first_name: first_name,
+                last_name: last_name,
+                mobile: mobile
+                // name: first_name + " " + last_name
             });
+            console.log("newUser "+newUser)
             const accessToken = jwt.sign({
                 userId: newUser._id,
                 role: newUser.role,
                 email: newUser.email,
-                name: newUser.name
+                // name: newUser.name,
+                first_name: newUser.first_name,
+                last_name: newUser.last_name,
+                mobile: newUser.mobile
             }, process.env.JWT_SECRET, {
                 expiresIn: "1d"
             });
             newUser.accessToken = accessToken;
             await newUser.save();
             return res.status(200).json({
-                data: newUser,
+            data: newUser,
                 accessToken
             })
         } catch (err) {
@@ -89,7 +101,10 @@ module.exports = {
                 userId: user._id,
                 role: user.role,
                 email: user.email,
-                name: user.name
+                // name: user.name
+                first_name: user.first_name,
+                last_name: user.last_name,
+                mobile: user.mobile
             }, process.env.JWT_SECRET, {
                 expiresIn: "1d"
             });
@@ -98,8 +113,11 @@ module.exports = {
             })
             res.status(200).json({
                 data: {
-                    name: user.name,
+                    first_name: user.first_name,
+                    last_name: user.last_name,
+                    // name: user.name,
                     email: user.email,
+                    mobile: user.mobile,
                     role: user.role,
                     _id: user._id
                 },
@@ -128,7 +146,7 @@ module.exports = {
             });
         }
     },
-    //getuser
+    //getuser by id
     getuser: async (req, res, next) => {
         try {
             const userId = req.params.userId;
@@ -156,6 +174,52 @@ module.exports = {
                 data: user,
                 message: 'User has been updated'
             });
+        } catch (err) {
+            console.log(err);
+            return res.status(500).json({
+                success: 0,
+                message: "Error Message",
+            });
+        }
+    },
+    studentCreate: async (req, res) => {
+        try {
+            const {
+                name,
+                user_id
+
+            } = req.body
+            const user = await Student.findOne({
+                name
+            });
+            console.log(user);
+
+            /*
+            if (user) return res.status(403).json({
+                success: 0,
+                message: 'Email already exist'
+            });
+            const hashedPassword = await hashPassword(password);
+            */
+            const newStudent = new Student({
+                name: name,
+                userId: user_id
+
+            });
+            console.log("newStudent "+newStudent)
+            const accessToken = jwt.sign({
+                studentId: newStudent._id,
+                userId: newStudent.userId,
+                name: newStudent.name
+            }, process.env.JWT_SECRET, {
+                expiresIn: "1d"
+            });
+            newStudent.accessToken = accessToken;
+            await newStudent.save();
+            return res.status(200).json({
+            data: newStudent,
+                accessToken
+            })
         } catch (err) {
             console.log(err);
             return res.status(500).json({

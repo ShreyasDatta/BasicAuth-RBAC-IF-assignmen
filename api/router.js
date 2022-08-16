@@ -4,7 +4,8 @@ const {
     signin,
     getusers,
     getuser,
-    updateuser
+    updateuser,
+    studentCreate
 } = require("./controller");
 const {
     allowifloggedin,
@@ -25,6 +26,7 @@ router.get("/getusers", allowifloggedin, grantAccess('readAny', 'profile'), getu
 
 router.put("/updateuser/:userId", allowifloggedin, grantAccess('updateAny', 'profile'), updateuser);
 
+router.post("/student", allowifloggedin, grantAccess('createOwn', 'profile'), studentCreate);
 
 
 module.exports = router;

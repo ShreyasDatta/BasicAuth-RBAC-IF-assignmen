@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const registerUserSchema = new mongoose.Schema({
+const registerStudentSchema = new mongoose.Schema({
     role: {
         type: String,
         default: 'basic',
@@ -9,39 +9,17 @@ const registerUserSchema = new mongoose.Schema({
     accessToken: {
         type: String
     },
-    email: {
+    userId: {
         type: String,
         required: true,
         min: 5,
         max: 255,
     },
-    password: {
-        type: String,
-        required: true,
-        min: 8,
-        max: 1024,
-    },
-    // name: {
-    //     type: String,
-    //     required: true,
-    //     min: 5,
-    //     max: 255},
-    first_name: {
+    name: {
         type: String,
         required: true,
         min: 5,
         max: 255},
-    last_name: {
-        type: String,
-        required: true,
-        min: 5,
-        max: 255
-    },
-    mobile: {  
-        type: String,
-        min: 5,
-        max: 255
-    },
     created: {
         type: Date,
         default: Date.now,
@@ -55,4 +33,4 @@ const registerUserSchema = new mongoose.Schema({
 //   updated DateTime
 // }
 
-module.exports = mongoose.model("User", registerUserSchema);
+module.exports = mongoose.model("Student", registerStudentSchema);
